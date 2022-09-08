@@ -2,7 +2,7 @@
 
 ### 一、 软件安装
 
-空
+[:point_right:点击直达](https://github.com/GanConglei/PersonalNotes/blob/master/1.%20%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/3.%20QT%20Creator.md)
 
 ### 二、 软件代码
 
