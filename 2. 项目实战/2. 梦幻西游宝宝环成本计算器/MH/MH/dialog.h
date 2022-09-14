@@ -11,8 +11,8 @@ QT_END_NAMESPACE
 
 typedef struct
 {
-    int quantity; //数量
-    int price; //单价
+    unsigned int quantity; //数量
+    unsigned int price; //单价
 } Property_t;
 
 typedef struct
@@ -47,12 +47,18 @@ typedef struct
 
 typedef struct
 {
-    Property_t FirFruniture; //一家
-    Property_t SecFruniture; //二家
+    Property_t firFruniture; //一家
+    Property_t secFruniture; //二家
     Property_t cooking; //烹饪
     Property_t drug; //炼药
 } Skill_t; //体活
 
+typedef struct
+{
+    Property_t noAssign; //非指定
+    Property_t assign; //指定
+    Property_t garbage; //垃圾
+} Pet_t;
 
 typedef struct
 {
@@ -60,22 +66,21 @@ typedef struct
     Flower_t Flower;
     Music_t Music;
     Skill_t Skill;
+    Pet_t Pet;
 } Variety_t;
 
 typedef  struct
 {
     int CurStep; //当前环数
     int CurGrade; //当前分数
-    int RemainStep; //剩余环数
-    int RemainGrade_150; //距离150分数
-    int RemainGrade_140; //距离140分数
-    int RemainGrade_130; //距离130分数
-    int RemainGrade_120; //距离120分数
     int WeaEquCnt_60; //60
     int WeaEquCnt_70; //70
     int WeaEquCnt_80; //80
-    int cost; //成本
+    unsigned long Cost; //成本
 } Total_t;
+
+ extern Variety_t Variety;
+ extern Total_t Total;
 
 class Dialog : public QDialog
 {
@@ -90,13 +95,73 @@ private slots:
 
     void on_pushButtonClear_clicked();
 
+    void on_DisplayUpdate();
+
+    void on_spinBoxCurStep_valueChanged(int arg1);
+
+    void on_spinBoxCurGrade_valueChanged(int arg1);
+
+    void on_pushButtonLookForSomeoneMin_clicked();
+
+    void on_pushButtonLookForSomeoneAdd_clicked();
+
+    void on_pushButtonWeaponMin_60_clicked();
+
+    void on_pushButtonWeaponAdd_60_clicked();
+
+    void on_pushButtonEquipMin_60_clicked();
+
+    void on_pushButtonEquipAdd_60_clicked();
+
+    void on_pushButtonWeaponMin_70_clicked();
+
+    void on_pushButtonWeaponAdd_70_clicked();
+
+    void on_pushButtonEquipMin_70_clicked();
+
+    void on_pushButtonEquipAdd_70_clicked();
+
+    void on_pushButtonWeaponMin_80_clicked();
+
+    void on_pushButtonWeaponAdd_80_clicked();
+
+    void on_pushButtonEquipMin_80_clicked();
+
+    void on_pushButtonEquipAdd_80_clicked();
+
+    void on_pushButtonFirFurnitureMin_clicked();
+
+    void on_pushButtonFirFurnitureAdd_clicked();
+
+    void on_pushButtonSecFurnitureMin_clicked();
+
+    void on_pushButtonSecFurnitureAdd_clicked();
+
+    void on_pushButtonDrugMin_clicked();
+
+    void on_pushButtonDrugAdd_clicked();
+
+    void on_pushButtonCookingMin_clicked();
+
+    void on_pushButtonCookingAdd_clicked();
+
+    void on_pushButtonPetMin_clicked();
+
+    void on_pushButtonPetAdd_clicked();
+
+    void on_pushButtonFloMisMin_clicked();
+
+    void on_pushButtonFloMisAdd_clicked();
+
 private:
     Ui::Dialog *ui;
 
     SettingDialog settingDialog;
 
-    Variety_t Variety;
-    Total_t Total;
+    void DateInit();
+
+//    Variety_t Variety;
+//    Total_t Total;
 };
 
 

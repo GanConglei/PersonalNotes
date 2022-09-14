@@ -24,6 +24,7 @@
 #### :battery:项目实战
 
 - [QT串口助手](https://github.com/GanConglei/PersonalNotes/tree/master/2.%20%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/1.%20QT%E4%B8%B2%E5%8F%A3%E5%8A%A9%E6%89%8B)
+- [QT梦幻西游宝宝环计算器](https://github.com/GanConglei/PersonalNotes/tree/master/2.%20%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/2.%20%E6%A2%A6%E5%B9%BB%E8%A5%BF%E6%B8%B8%E5%AE%9D%E5%AE%9D%E7%8E%AF%E6%88%90%E6%9C%AC%E8%AE%A1%E7%AE%97%E5%99%A8)
 
 #### :page_with_curl:个人总结
 

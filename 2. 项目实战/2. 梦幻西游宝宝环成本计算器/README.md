@@ -73,11 +73,214 @@
         }
         ```
 
+
+### 软件设计
+
+- 显示定时器设置
+
+    - 创建一个定时，用来显示一些变量信息；
+
+        ```c
+        QTimer *DisTimer = new QTimer(this); //创建定时器，用于刷新显示
+        ```
+
+    - 设置连接函数，将信号发送者（sender）对象中的信号（signal）与接受者（receiver）中的（slot）槽函数联系起来;
+
+        ```c
+        //设置信号和槽
+        connect(DisTimer, SIGNAL(timeout()), this, SLOT(on_DisplayUpdate()));
+        ```
+
+    - 启动定时器，并设置定时时间，单位ms;
+
+        ```c
+        //启动定时器
+        DisTimer->start(100);
+        ```
+
+    - 在槽函数 `on_DisplayUpdate()` 中进行显示操作；
+
+- `int`  型转换成 `Qtring` ；
+
+    ```c
+    int i = 5;
+     
+    QString s = QString::number(i);
+    ```
+
+- 获取 `lineEdit` 中的字符并转换成 `int` 型；
+
+    ```c
+    int a = ui->lineEdit->text().toInt();
+    ```
+
+    `ui->lineEdit->text()` 返回的是 `QSting` 型的数据，需要进行一个类型转换。
+
+- `QDataStream` 简单读写操作
+
+    软件需要保存一些数据，以防下次使用时重复配置。`QDataStream` 类可以将任意的常用类型的数据以二进制的方式写入 `QFile` 指定的磁盘文件中，同时也可以按照写入的顺序依次读出数据。
+
+    - 写入数据
+
+        ```c
+        #define file "config.txt"
+        //获取数据
+        Variety.WeaEqu.weapon_60.price = ui->lineEditWeapon_60->text().toInt();
+        Variety.WeaEqu.equipment_60.price = ui->lineEditEquipment_60->text().toInt();
+        Variety.WeaEqu.weapon_70.price = ui->lineEditWeapon_70->text().toInt();
+        Variety.WeaEqu.equipment_70.price = ui->lineEditEquipment_70->text().toInt();
+        Variety.WeaEqu.weapon_80.price = ui->lineEditWeapon_80->text().toInt();
+        Variety.WeaEqu.equipment_80.price = ui->lineEditEquipment_80->text().toInt();
+        Variety.Skill.firFruniture.price = ui->lineEditFirFruniture->text().toInt();
+        Variety.Skill.secFruniture.price = ui->lineEditSecFruniture->text().toInt();
+        Variety.Skill.drug.price = ui->lineEditDrug->text().toInt();
+        Variety.Skill.cooking.price =  ui->lineEditCooking->text().toInt();
+        Variety.Music.desolate.price = 1000;
+        Variety.Music.cymbals.price = 1000;
+        Variety.Music.woodblock.price = ui->lineEditWoodblock->text().toInt();
+        Variety.Music.harp.price = ui->lineEditHarp->text().toInt();
+        Variety.Music.pipa.price = ui->lineEditPipa->text().toInt();
+        Variety.Music.suona.price = ui->lineEditSuona->text().toInt();
+        Variety.Music.flute.price = ui->lineEditFlute->text().toInt();
+        Variety.Music.chime.price = ui->lineEditChime->text().toInt();
+        Variety.Flower.peony.price = ui->lineEditPeony->text().toInt();
+        Variety.Flower.rose.price = ui->lineEditRose->text().toInt();
+        Variety.Flower.carnation.price = ui->lineEditCarnation->text().toInt();
+        Variety.Flower.lily.price = ui->lineEditLily->text().toInt();
         
+        QFile filesrc(file);
+        filesrc.open(QIODevice::WriteOnly);
+        QDataStream out(&filesrc);
+        out << Variety.WeaEqu.weapon_60.price << Variety.WeaEqu.equipment_60.price
+            << Variety.WeaEqu.weapon_70.price << Variety.WeaEqu.equipment_70.price
+            << Variety.WeaEqu.weapon_80.price << Variety.WeaEqu.equipment_80.price
+            << Variety.Skill.firFruniture.price << Variety.Skill.secFruniture.price
+            << Variety.Skill.drug.price << Variety.Skill.cooking.price
+            << Variety.Music.desolate.price << Variety.Music.cymbals.price
+            << Variety.Music.woodblock.price << Variety.Music.harp.price
+            << Variety.Music.pipa.price << Variety.Music.suona.price
+            << Variety.Music.flute.price << Variety.Music.chime.price
+            << Variety.Flower.rose.price << Variety.Flower.lily.price
+            << Variety.Flower.carnation.price << Variety.Flower.peony.price; //写入数据
+        filesrc.flush();
+        filesrc.close();
+        ```
 
+    - 读出数据
 
+        ```c
+        //判断是否存在config文件，如果不存在则创建config文件
+        if(QFile::exists(file))
+        {
+            QFile filenew(file);
+            filenew.open(QIODevice::ReadOnly);
+            QDataStream in(&filenew); // 从文件读取序列化数据
+            in >> Variety.WeaEqu.weapon_60.price >> Variety.WeaEqu.equipment_60.price
+                    >> Variety.WeaEqu.weapon_70.price >> Variety.WeaEqu.equipment_70.price
+                    >> Variety.WeaEqu.weapon_80.price >> Variety.WeaEqu.equipment_80.price
+                    >> Variety.Skill.firFruniture.price >> Variety.Skill.secFruniture.price
+                    >> Variety.Skill.drug.price >> Variety.Skill.cooking.price
+                    >> Variety.Music.desolate.price >> Variety.Music.cymbals.price
+                    >> Variety.Music.woodblock.price >> Variety.Music.harp.price
+                    >> Variety.Music.pipa.price >> Variety.Music.suona.price
+                    >> Variety.Music.flute.price >> Variety.Music.chime.price
+                    >> Variety.Flower.rose.price >> Variety.Flower.lily.price
+                    >> Variety.Flower.carnation.price >> Variety.Flower.peony.price; //提取写入的数据
+            filenew.close();
+            //设置界面值
+            ui->lineEditWeapon_60->setText(QString::number(Variety.WeaEqu.weapon_60.price));
+            ui->lineEditEquipment_60->setText(QString::number(Variety.WeaEqu.equipment_60.price));
+            ui->lineEditWeapon_70->setText(QString::number(Variety.WeaEqu.weapon_70.price));
+            ui->lineEditEquipment_70->setText(QString::number(Variety.WeaEqu.equipment_70.price));
+            ui->lineEditWeapon_80->setText(QString::number(Variety.WeaEqu.weapon_80.price));
+            ui->lineEditEquipment_80->setText(QString::number(Variety.WeaEqu.equipment_80.price));
+            ui->lineEditFirFruniture->setText(QString::number(Variety.Skill.firFruniture.price));
+            ui->lineEditSecFruniture->setText(QString::number(Variety.Skill.secFruniture.price));
+            ui->lineEditDrug->setText(QString::number(Variety.Skill.drug.price));
+            ui->lineEditCooking->setText(QString::number(Variety.Skill.cooking.price));
+            ui->lineEditWoodblock->setText(QString::number(Variety.Music.woodblock.price));
+            ui->lineEditHarp->setText(QString::number(Variety.Music.harp.price));
+            ui->lineEditPipa->setText(QString::number(Variety.Music.pipa.price));
+            ui->lineEditSuona->setText(QString::number(Variety.Music.suona.price));
+            ui->lineEditFlute->setText(QString::number(Variety.Music.flute.price));
+            ui->lineEditChime->setText(QString::number(Variety.Music.chime.price));
+            ui->lineEditPeony->setText(QString::number(Variety.Flower.peony.price));
+            ui->lineEditRose->setText(QString::number(Variety.Flower.rose.price));
+            ui->lineEditCarnation->setText(QString::number(Variety.Flower.carnation.price));
+            ui->lineEditLily->setText(QString::number(Variety.Flower.lily.price));
+        }
+        ```
 
+### 软件LOGO
 
+1. 准备一个ico文件，可以将png图片转换成ico图标，图标大小可以设置成128x128。可以在[图标在线转换网站](https://www.aconvert.com/cn/icon/png-to-ico/)进行在线转换。转换完毕将xxx.ico图标文件放到与.pro同一个目录下；
 
+    <img src="image/image-20220914141221137.png" alt="image-20220914141221137" style="zoom: 80%;" />
 
+2. 在.pro文件中添加一行代码；
 
+    ```c
+    RC_ICONS = chess.ico  //chess.ico为所需要设置的图标
+    ```
+
+3. 重新编译依次；
+
+### 软件打包
+
+软件调试成功后，需要进行打包工作。
+
+1. 前期准备，下载Enigma virtual box工具，官方链接：https://enigmaprotector.com/en/downloads.html
+
+    选择第3个，安装过程全程无尿点，略过。
+
+​	<img src="image/image-20220914112816863.png" alt="image-20220914112816863" style="zoom:50%;" />
+
+2. 使用Release编译，在工程目录下会生成一个带 `Release` 后缀的文件夹；
+
+    ![image-20220914113407066](image/image-20220914113407066.png)
+
+    ![image-20220914113626323](image/image-20220914113626323.png)
+
+3. 新建一个文件夹，将 `Release` 文件夹下生成的 `.exe` 文件拷贝进去；
+
+4. 使用QT自带的命令行工具，使用 `windeployqt` 命令进行打包；
+
+    - 打开命令行工具
+
+    ![image-20220914114231099](image/image-20220914114231099.png)
+
+    - 使用个命令行指令，进入刚才新建的文件夹中；
+
+        ```shell
+        cd C:\Users\Administrator\Desktop\MH
+        ```
+
+    - 使用 `windeployqt MH.exe` 对可执行文件进行打包；
+
+        <img src="image/image-20220914114719352.png" alt="image-20220914114719352" style="zoom:80%;" />
+
+        <img src="image/image-20220914114803597.png" alt="image-20220914114803597" style="zoom:80%;" />
+
+5. 打开刚才安装的 `Enigma virtual box` 软件，按照步骤进行操作；
+
+    - 点击 `浏览` ,加载需要打包的可执行文件；
+    - 点击 `增加` -- `增加文件夹(递归)`， 选择刚才新建的文件夹；
+    - 点击 `文件选项` ,勾选 `压缩文件` ;
+    - 点击 `执行封包` ,开始进行打包操作；
+    - 压缩完成；
+
+    <img src="image/image-20220914115137847.png" alt="image-20220914115137847" style="zoom:80%;" />
+
+    <img src="image/image-20220914115215434.png" alt="image-20220914115215434" style="zoom:80%;" />
+
+### 写在最后
+
+目前为止已经完成了基于QT实现跑环成本的计算功能，阶段性进行总结：
+
+* 优点
+    1. 实现了宝宝环计算的功能；
+    2. 能够手动对当前环数和当前积分进行调整；
+    3. 能够对误点进行纠错处理；
+    4. 能够对设置的物品价格进行自动记录，避免下次使用重复配置；
+* 缺点
+    1. 没有支持文件导出功能，理想中的状态可以导出当前的记录并保存到EXCEL中；
